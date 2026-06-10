@@ -123,6 +123,9 @@
   <data name="MissingPrice" xml:space="preserve">
     <value>Please enter a price</value>
   </data>
+  <data name="MissingQuantity" xml:space="preserve">
+    <value>Please enter a quantity</value>
+  </data>
   <data name="MissingStock" xml:space="preserve">
     <value>Please enter a stock value</value>
   </data>
