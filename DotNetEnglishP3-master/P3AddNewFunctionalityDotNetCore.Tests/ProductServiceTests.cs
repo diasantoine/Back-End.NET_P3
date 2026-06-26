@@ -11,10 +11,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 {
     public class ProductServiceTests
     {
-        /// <summary>
-        /// Builds a real ProductService with mocked dependencies.
-        /// Use of mocks to satisfy the constructor.
-        /// </summary>
+        // Real ProductService with mocked constructor dependencies.
         private static ProductService CreateProductService()
         {
             var cart = new Mock<ICart>();
@@ -27,114 +24,90 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         }
 
         [Fact]
-        public void ProductViewModel_FailsValidationWithMissingName()
+        public void EmptyName_ReturnsMissingName()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "", Price = "10", Stock = "5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("MissingName", errors);
         }
 
         [Fact]
-        public void ProductViewModel_FailsValidationWithMissingPrice()
+        public void EmptyPrice_ReturnsMissingPrice()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "", Stock = "5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("MissingPrice", errors);
         }
 
         [Fact]
-        public void ProductViewModel_FailsValidationWithPriceNotANumber()
+        public void NonNumericPrice_ReturnsPriceNotANumber()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "abc", Stock = "5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("PriceNotANumber", errors);
         }
 
         [Fact]
-        public void ProductViewModel_FailsValidationWithPriceNotGreaterThanZero()
+        public void ZeroPrice_ReturnsPriceNotGreaterThanZero()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "0", Stock = "5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("PriceNotGreaterThanZero", errors);
         }
 
         [Fact]
-        public void ProductViewModel_FailsValidationWithMissingQuantity()
+        public void EmptyStock_ReturnsMissingQuantity()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "10", Stock = "" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("MissingQuantity", errors);
         }
 
         [Fact]
-        public void ProductViewModel_StockIsNotAnInteger_FailsValidationWithStockNotAnInteger()
+        public void DecimalStock_ReturnsStockNotAnInteger()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "10", Stock = "1.5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("StockNotAnInteger", errors);
         }
 
         [Fact]
-        public void ProductViewModel_StockIsNotGreaterThanZero_FailsValidationWithStockNotGreaterThanZero()
+        public void ZeroStock_ReturnsStockNotGreaterThanZero()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "10", Stock = "0" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Contains("StockNotGreaterThanZero", errors);
         }
 
         [Fact]
-        public void ProductViewModel_AllFieldsValid_PassesValidation()
+        public void ValidProduct_ReturnsNoErrors()
         {
-            // Arrange
             var productService = CreateProductService();
             var product = new ProductViewModel { Name = "Pen", Price = "10", Stock = "5" };
 
-            // Act
             List<string> errors = productService.CheckProductModelErrors(product);
 
-            // Assert
             Assert.Empty(errors);
         }
     }
